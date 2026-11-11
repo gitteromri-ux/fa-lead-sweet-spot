@@ -38,7 +38,7 @@
   const ax = (title, o) => Object.assign({ title: { display: !!title, text: title || "", color: C.textSec, font: { size: 13, weight: "600" } }, ticks: { color: C.textSec, font: { size: 13 } }, grid: { color: C.gridLine } }, o || {});
   const vline = (v, label, color) => ({ type: "line", xMin: v, xMax: v, borderColor: color || C.cyan, borderWidth: 2, borderDash: [6, 5], label: { display: !!label, content: label, position: "start", backgroundColor: color || C.cyan, color: "#04121a", font: { size: 12, weight: "700" }, padding: 5 } });
   const hline = (v, label, color, axis) => ({ type: "line", yMin: v, yMax: v, yScaleID: axis || "y", borderColor: color || C.amber, borderWidth: 2, borderDash: [6, 5], label: { display: !!label, content: label, position: "start", backgroundColor: color || C.amber, color: "#0b1120", font: { size: 12, weight: "700" }, padding: 5 } });
-  const dl = (col, fmt, o) => Object.assign({ display: true, color: col, align: "top", font: { size: 12, weight: "700" }, formatter: fmt }, o || {});
+  const dl = (col, fmt, o) => Object.assign({ display: (c) => c.chart.width > 420, color: col, align: "top", font: { size: 12, weight: "700" }, formatter: fmt }, o || {});
   const base = (o) => Object.assign({ responsive: true, maintainAspectRatio: false }, o);
 
   // ── HTML builders (same components as the CEO Suite) ──
@@ -344,7 +344,7 @@
         { label: "Top-5 capacity", value: n0(G.top.cw), sub: "contacted orders a week between the five", tag: "v" },
       ]) +
       chartCard("rpA", "Contacted orders handled and close rate, rep by rep", "Bars: contacted orders (green = top-5 closer, cyan = senior, pink = newcomer, grey = left the team). Dots: acquisitions ÷ contacted.", 440) +
-      dataTable("The golden rule if you count the top 3, 4 or 5", "Top closers ordered by new acquisitions. Share of all contacted orders in the CRM export, whole period.",
+      dataTable("The golden rule if you count the top 3, 4 or 5", "The five top closers are the ones named in the CEO Performance Suite, listed here by new acquisitions. De Montclair Camille has 68 new acquisitions (2 more than Petit) at a 6.9% close rate against Petit's 10.2%; she is counted as a senior. Share of all contacted orders in the CRM export, whole period.",
         ["Group", "Who", "Contacted", "Golden rule (share of contacted)", "New acquisitions", "Share of acquisitions", "Close rate", "Contacted a week"],
         topN, (i) => (i === 2 ? "hl" : "")) +
       dataTable("Every rep", "Sorted by contacted orders. “Left the team” = disabled in the CRM.",
@@ -361,7 +361,7 @@
         [5, 4, 3].map((k) => { const L = k * 20, r = row(L); return [{ v: k, cls: "big" }, L, L * 7, n0(r.acq)]; }),
         (i) => (i === 0 ? "hl" : "")) +
       `</div>` +
-      verdict("What is assumed here", `<b>The CRM has no shift or hours log.</b> “Per shift” assumes each rep works 5 shifts a week; 20 a shift is 700 leads ÷ 35 rep-shifts. Groups come from the rep export: the five top closers, seniors with 6+ months, newcomers in their first two months. With a shift roster these become counted numbers.`, true)
+      verdict("What is assumed here", `<b>The CRM has no shift or hours log.</b> “Per shift” assumes each rep works 5 shifts a week; 20 a shift is 700 leads ÷ 35 rep-shifts. Groups: the five top closers named in the CEO Performance Suite, seniors with 6+ months, newcomers in their first two months. With a shift roster these become counted numbers.`, true)
     );
     const colr = (g) => (g.indexOf("Top") === 0 ? C.emerald : g.indexOf("New") === 0 ? C.pink : g.indexOf("Senior") === 0 ? C.cyan : "rgba(148,163,184,0.45)");
     mkChart("rpA", { data: { labels: P.map((r) => r.name), datasets: [

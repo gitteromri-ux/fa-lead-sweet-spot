@@ -75,3 +75,12 @@
 .charts-grid .data-table{font-size:14px}
 .charts-grid .data-table th{padding:10px 9px}
 .charts-grid .data-table td{padding:10px 9px}
+.data-table.dense{font-size:13px}
+.data-table.dense th{padding:10px 5px}
+.data-table.dense td{padding:9px 5px}
+.data-table.dense th:first-child,.data-table.dense td:first-child{padding-left:12px}
+.data-table.dense th:last-child,.data-table.dense td:last-child{padding-right:12px}
+.data-table.dense th{padding:10px 4px}
+.data-table.dense td{padding:9px 4px}
+.data-table.dense th:first-child,.data-table.dense td:first-child{padding-left:10px}
+.data-table.dense th:last-child,.data-table.dense td:last-child{padding-right:10px}
