@@ -100,3 +100,16 @@
 .data-table tr.off td{opacity:.45}
 .bl-text em.r{color:#F87171}
 @media (max-width:768px){.ctl-row{flex-direction:column;align-items:flex-start;gap:8px}.ctl-l{flex:none}}
+
+select.rk,input.sh{font:700 15px/1 Inter,sans-serif;color:#fff;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.55);border-radius:8px;padding:6px 8px;min-height:34px}
+input.sh{width:56px;text-align:center}
+select.rk{width:58px;cursor:pointer}
+select.rk option{background:#0f172a;color:#fff}
+select.rk:focus-visible,input.sh:focus-visible{outline:2px solid #22D3EE;outline-offset:2px}
+.data-table small.gs{display:block;font-size:11px;font-weight:600;letter-spacing:.03em;opacity:.8;margin-top:2px}
+.data-table td .pill{margin-left:6px}
+
+.data-table td span.mut{color:#64748B;font-weight:500;font-size:.85em}
+.data-table td.big small.gs{font-weight:500;color:#94A3B8}
+.data-table tr.hl td.no{color:#F87171}
+.data-table td.big.no,.data-table tr.hl td.big.no{color:#F87171}.data-table td.big.ok,.data-table tr.hl td.big.ok{color:#34D399}
