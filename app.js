@@ -56,6 +56,7 @@
   const verdict = (label, text, amber) => `<div class="verdict-banner${amber ? " amber" : ""}"><div class="verdict-label">${label}</div><div class="verdict-text">${text}</div></div>`;
   const ins = (items, cls) => `<div class="ins${cls ? " " + cls : ""}">${items.map((i) => `<div class="in" style="--ac:${i.c || C.cyan}"><div class="in-h">${i.h}</div><div class="in-big">${i.big}</div><div class="in-b">${i.b}</div></div>`).join("")}</div>`;
   const sec = (t) => `<div class="sec">${t}</div>`;
+  const todayNote = () => verdict("For today's team", `This tab shows the <b>ceiling</b>: a full-strength team with leads at $20, which lands on <b>100 a day</b>. With today's nine reps and leads at about $30, the number is <b>${plan(allOn(), "29.7").L5} a day</b>. The rep-by-rep split is on the <b>Team Today</b> tab, and the recent slide is on <b>Last 6 Weeks</b>.`, true);
   const ok = (b, t) => ({ v: (b ? "✓ " : "✗ ") + t, cls: b ? "ok" : "no" });
   const pill = (b, t) => `<span class="pill ${b === true ? "p-ok" : b === false ? "p-no" : "p-q"}">${t}</span>`;
   const view = (html) => { container.innerHTML = `<div class="dashboard-view">${html}</div>`; };
@@ -65,37 +66,38 @@
   // ===================== OVERVIEW =====================
   function rOverview() {
     const B = X.bands, b20 = X.boot["20"];
+    const PT = plan(allOn(), "29.7"), L6 = D2.B.find((b) => b.k === "l6"), P6 = D2.B.find((b) => b.k === "p6");
     view(
       headline("How many leads a day should French Atelier buy?", `French Atelier call center · CRM 1 Mar – 10 Nov 2026 · 21,753 leads · ${G.tot.acq} new acquisitions · ${n0(G.tot.regs)} registrations · 36 weeks · cross-checked with the data team's Employee Rank scorecard`) +
-      bottom("Bottom line", `<em>100 leads a day.</em> 700 a week. 20 per rep per shift.`, `100 is the only step on the 5-lead ladder where three things meet: <b>the last extra leads still pay for themselves</b>, <b>the next ones don't</b>, and <b>the top-ranked closers still handle 60% of contacted orders</b>. That is at $20 a lead. At $23 the answer is <b>95</b>. At today's real cost of $29.70 it is <b>85</b>.`) +
+      bottom("Bottom line", `<em>${PT.L5} leads a day for today's team.</em> 100 is the ceiling.`, `Today's team is <b>${PT.n} reps</b> (${PT.nTop} top closers, ${PT.n - PT.nTop - PT.nNew} senior, ${PT.nNew} newcomers) and leads cost about <b>$30</b>. Two separate tests land on the same number: what these nine reps normally carry (<b>${n0(PT.byLoad)}</b> a day) and where the last leads stop paying at $29.70 (<b>85</b>). 100 a day is right only with leads at $20 and about two more strong closers. The last six weeks ran at <b>${n0(L6.lpd)} a day</b>: ${pc((L6.lpd / P6.lpd - 1) * 100)} more leads, ${pc((1 - L6.acq / P6.acq) * 100)} fewer new acquisitions, ROI ${xx(P6.roi)} → ${xx(L6.roi)}.`) +
       kpis([
-        { label: "Whole team · per day", value: "100", sub: "7-day average, weekends included", cls: "accent-green", tag: "e" },
-        { label: "Per week · per month", value: "700", sub: `<b>≈ ${n0(S.mo)}</b> leads a month`, tag: "e" },
-        { label: "Per rep · per shift", value: "20", sub: "700 ÷ 35 rep-shifts (7 reps × 5 shifts). No shift log exists.", tag: "a" },
+        { label: "Today's 9 reps · per day", value: String(PT.L5), sub: `<b>${n0(PT.L5 * 7)}</b> a week · ≈ ${n0(PT.L5 * 30.4)} a month. 7-day average`, cls: "accent-green", tag: "e" },
+        { label: "Ceiling · full team, $20 leads", value: "100", sub: "<b>95</b> at $23 · <b>85</b> at $29.70. Needs about two more strong closers", tag: "e" },
+        { label: "Per rep · per shift", value: `${n0(Math.min.apply(null, PT.reps.map((r) => r.shift)))}–${n0(Math.max.apply(null, PT.reps.map((r) => r.shift)))}`, sub: PT.reps.filter((r) => !r.nw).map((r) => `${r.short} <b>${n0(r.shift)}</b>`).join(" · ") + ` · newcomers <b>${n0(PT.reps.filter((r) => r.nw)[0].shift)}</b>. 5 shifts a week assumed`, tag: "a" },
         { label: "Never in one day", value: "150+", sub: `Those days sold <b>29% less</b>: ${n1(B[5].acqs)} vs ${n1(B[3].acqs)} acquisitions a day`, cls: "accent-red", tag: "v" },
       ]) +
       kpis([
-        { label: "New acquisitions / month", value: n0(S.acq), sub: `95% range <b>${n0(S.lo)}–${n0(S.hi)}</b>`, tag: "e" },
-        { label: "All registrations / month", value: n0(S.reg), sub: `<b>${n0(S.acq)}</b> new + <b>${n0(S.add)}</b> add-on`, tag: "e" },
-        { label: "ROI at $20 a lead", value: xx(S.roi20), sub: `${usdK(S.sov)} SOV ÷ ${usdK(S.med20)} media. <b>${xx(S.roi23)}</b> at $23`, tag: "e" },
-        { label: "Top ranks' share of contacted", value: pc(S.top), sub: "Ranks 3–4 on the scorecard. Golden rule floor: 60%", tag: "e" },
+        { label: "New acquisitions / month at 85", value: `${n0(PT.acq)}–${n0(S29.acq)}`, sub: `<b>${n0(PT.acq)}</b> from today's nine at their own close rates · <b>${n0(S29.acq)}</b> on the 36-week curve. At 100: ${n0(S.acq)}`, tag: "e" },
+        { label: "All registrations / month at 85", value: n0(S29.reg), sub: `<b>${n0(S29.acq)}</b> new + <b>${n0(S29.add)}</b> add-on on the curve. At 100: ${n0(S.reg)}`, tag: "e" },
+        { label: "ROI at 85 a day", value: xx(S29.roi297), sub: `at $29.70 a lead. <b>${xx(S29.roi23)}</b> at $23 · <b>${xx(S29.roi20)}</b> at $20`, tag: "e" },
+        { label: "Last 6 weeks · media per new acquisition", value: usd(L6.cpa), sub: `six weeks before <b>${usd(P6.cpa)}</b>. ROI ${xx(P6.roi)} → <b>${xx(L6.roi)}</b>`, cls: "accent-red", tag: "e" },
       ]) +
       sec("The intersect · where sales, ROI and the golden rule meet") +
       `<div class="charts-grid cols-2">` +
       chartCard("ovA", "Sales keep rising, but each extra lead brings less", "Bars: new acquisitions a month. Line: dollars of SOV that come back for each extra $1 of leads at that step, at $20 a lead. Under the $1 line the extra leads lose money.", 400) +
       chartCard("ovB", "More leads push contacted orders away from the top closers", "Share of contacted orders handled by scorecard ranks 3–4 (top) and by rank 1 (lowest), at each lead level.", 400) +
       `</div>` +
-      dataTable("Three tests at every 5-lead step · only one step passes all three", "Test 1: buying 5 more would lose money, so no paying sales are left on the table. Test 2: the last 5 added paid for themselves. Test 3: top ranks still handle 60% or more of contacted orders. All at $20 a lead. Calls per lead and contact rate are whole-week figures, weekends included.",
-        ["Leads a day", "Per rep per shift", "New acquisitions / month", "Test 1 · next +5 would bring back", "Test 2 · last +5 brought back", "Test 3 · top ranks' share", "Calls per lead", "Contact rate", "ROI at $20", "Tests passed"],
-        R.map((r) => [{ v: r.L, cls: "big" }, r.ps, n1(r.acq), ok(r.t1, "$" + n2(r.next20)), ok(r.t2, "$" + n2(r.back20)), ok(r.t3, pc(r.top)), n2(r.cpl), pc(r.ctr, 1), xx(r.roi20), { v: r.n + " of 3", cls: r.n === 3 ? "ok" : "mut" }]),
-        (i) => (R[i].L === 100 ? "hl" : "")) +
+      dataTable("Three tests at every 5-lead step, at $20 a lead · the ceiling", "This table is the ceiling: a full-strength team and leads at $20. At $29.70 the same money tests pass at 85, and today's nine reps carry 85; both rows are highlighted. Test 1: buying 5 more would lose money, so no paying sales are left on the table. Test 2: the last 5 added paid for themselves. Test 3: top ranks still handle 60% or more of contacted orders. All at $20 a lead. Calls per lead and contact rate are whole-week figures, weekends included.",
+        ["Leads a day", "Average per rep-shift · 9 reps", "New acquisitions / month", "Test 1 · next +5 would bring back", "Test 2 · last +5 brought back", "Test 3 · top ranks' share", "Calls per lead", "Contact rate", "ROI at $20", "Tests passed"],
+        R.map((r) => [{ v: r.L, cls: "big" }, n1(r.L * 7 / (TEAM.length * 5)), n1(r.acq), ok(r.t1, "$" + n2(r.next20)), ok(r.t2, "$" + n2(r.back20)), ok(r.t3, pc(r.top)), n2(r.cpl), pc(r.ctr, 1), xx(r.roi20), { v: r.n + " of 3", cls: r.n === 3 ? "ok" : "mut" }]),
+        (i) => (R[i].L === 100 || R[i].L === 85 ? "hl" : "")) +
       sec("The same answer, cut the ways you asked") +
       ins([
         { h: "By lead price", big: "$20 → 100 · $23 → 95 · $29.70 → 85", b: `The dearer the lead, the earlier the last one stops paying. Leads cost <b>$20–24 from March to September</b> and <b>$${n2(X.last30.cpl)} in the last 30 days</b>. Getting the price back to $20 is worth 15 leads a day.`, c: C.amber },
-        { h: "By seniority", big: "Seniors 24 a shift. Newcomers 10.", b: `Seniors close <b>${n1(G.sen.ac)}%</b> of contacted orders. Newcomers in their first two months close <b>${n1(G.new.ac)}%</b>. A lead given to a newcomer is worth about ${pc(wN * 100)} of one given to a senior. Split shown for 5 seniors + 2 newcomers.`, c: C.indigo },
-        { h: "By team strength", big: "20 leads a day per top closer", b: `5 top closers working → about <b>100</b>. 4 → about <b>80</b>. 3 → about <b>60</b>. When a top closer is out, cut leads that week or the golden rule breaks.`, c: C.emerald },
+        { h: "By rep, per shift", big: PT.reps.filter((r) => r.top).map((r) => `${r.short} ${n0(r.shift)}`).join(" · "), b: `De Montclair <b>${n0(PT.reps.filter((r) => !r.top && !r.nw)[0].shift)}</b>, newcomers <b>${n0(PT.reps.filter((r) => r.nw)[0].shift)}</b> each. Each rep gets the leads that make the contacted orders they normally carry. Seniors close <b>${n1(G.sen.ac)}%</b> of contacted orders, newcomers <b>${n1(G.new.ac)}%</b>. Full table on the Team Today tab.`, c: C.indigo },
+        { h: "By who is in", big: `All nine ${PT.L5} · two top closers out ${plan(without(["Levite", "Mokla"]), "29.7").L5}`, b: `Six seniors without newcomers: <b>${plan(TEAM.map((t) => !t.nw), "29.7").L5}</b>. Five top closers alone: <b>${plan(TEAM.map((t) => t.top), "29.7").L5}</b>. When a top closer is out, cut leads that week or the golden rule breaks. Tick the roster on the Team Today tab.`, c: C.emerald },
       ]) +
-      verdict("How sure is this", `<b>Estimated, not measured to the single lead.</b> We re-ran the model on 4,000 reshuffles of the 36 weeks. The answer landed between <b>90 and 105 in ${b20.s90_105}%</b> of runs and between <b>80 and 110 in ${b20.s80_110}%</b>; the middle run said ${b20.med}. At 100 the last extra $1 brings back $${n2(S.back20)}, so 100 is break-even on the margin, not a cliff. The 150-a-day ceiling is counted on real days (p = 0.006).`, true)
+      verdict("How sure is this", `<b>Estimated, not measured to the single lead.</b> For the 100 ceiling we re-ran the model on 4,000 reshuffles of the 36 weeks. The answer landed between <b>90 and 105 in ${b20.s90_105}%</b> of runs and between <b>80 and 110 in ${b20.s80_110}%</b>; the middle run said ${b20.med}. At 100 the last extra $1 brings back $${n2(S.back20)}, so 100 is break-even on the margin, not a cliff. The 150-a-day ceiling is counted on real days (p = 0.006).`, true)
     );
     mkChart("ovA", { data: { labels: Ls, datasets: [
       { type: "line", label: "Extra $ back per extra $1 of leads", data: R.map((r) => r.back20), borderColor: C.amber, backgroundColor: C.amber, yAxisID: "y1", tension: 0.3, pointRadius: 5, borderWidth: 3, datalabels: dl(C.amber, (v) => "$" + n2(v)) },
@@ -113,6 +115,7 @@
     view(
       headline("At which lead does one more stop paying for itself?", "A ladder in steps of 5 leads a day, from 60 to 120. Each row: what the team sells there, and what the last 5 leads cost per extra acquisition.") +
       bottom("Bottom line", `After <em>100 a day</em>, an extra acquisition costs more than it brings in.`, `One new acquisition brings <b>${usd(X.SPA)}</b> of SOV, add-ons included. Going from 95 to 100 buys extra acquisitions at <b>${usd(S.mc20)}</b> each. Going from 100 to 105 buys them at <b class="r">${usd(r105.mc20)}</b> each. Sales still rise above 100, by about ${n1(r105.dA)} a month per step, but at a loss.`) +
+      todayNote() +
       kpis([
         { label: "Sweet spot at $20 a lead", value: "100", sub: `${n0(S.acq)} new acquisitions a month`, cls: "accent-green", tag: "e" },
         { label: "Last extra acquisition costs", value: usd(S.mc20), sub: `against the ${usd(X.SPA)} of SOV it brings`, tag: "e" },
@@ -201,6 +204,7 @@
     view(
       headline("What did the 36 real weeks actually deliver?", "Every full week from 2 Mar to 8 Nov 2026. No model in the table: leads in, calls made, orders contacted, sales closed.") +
       bottom("Bottom line", `The best real weeks sat at <em>100–109 leads a day</em>: a pace of ${n0(best.acqm)} acquisitions a month.`, `Weeks at 110–119 fell back to a pace of <b>${n0(hi.acqm)}</b>, with the close rate down from ${pc(best.ac, 1)} to <b class="r">${pc(hi.ac, 1)}</b> of contacted orders. The 100–109 group is only ${best.n} weeks, so the model on tab 1 puts 100 a day at a more careful <b>${n0(S.acq)}</b> a month.`) +
+      todayNote() +
       kpis([
         { label: "Average week", value: n1(X.avg.lpd), sub: `leads a day. Lowest week ${n1(X.avg.min)}, highest ${n1(X.avg.max)}`, tag: "v" },
         { label: "Weeks at 100–109 a day", value: n0(best.acqm), sub: `acquisitions a month pace · ${best.n} weeks`, cls: "accent-green", tag: "v" },
@@ -232,6 +236,7 @@
     view(
       headline("How many leads can the top closers carry before the golden rule breaks?", "Golden rule = the share of contacted orders handled by the team's top closers. Here: ranks 3–4 on the data team's Employee Rank scorecard, 14 full weeks, 2 Aug – 7 Nov 2026.") +
       bottom("Bottom line", `About <em>100 a day</em>. Past that, top closers handle under 60% of contacted orders.`, `Every 10 extra leads a day takes <b>${n1(-ft.b * 10)} points</b> off the top ranks' share (${pv(ft.p)}). The line crosses 60% at <b>${n0(cross)} leads a day</b>. The reason is simple: top closers handle about <b>${n0(X.cap.er)} contacted orders a week whatever the volume</b>, so everything extra lands on ranks 1–2.`) +
+      todayNote() +
       kpis([
         { label: "Top ranks' share at 100 a day", value: pc(S.top), sub: `<b>${pc(row(80).top)}</b> at 80 · <b>${pc(row(120).top)}</b> at 120`, cls: "accent-green", tag: "e" },
         { label: "Top closers' weekly capacity", value: n0(X.cap.er), sub: `contacted orders a week. Does not grow with leads (${pv(ER.fn34.p)})`, tag: "v" },
@@ -275,6 +280,7 @@
     view(
       headline("What does the data team's Employee Rank scorecard say about the sweet spot?", "Employee Rank · French (data team, Sisense) · ranks 1–4 set on each rep's past 60 days · filter “This & last 10 months” = 1 Jan – 10 Nov 2026. Scorecard figures are shown exactly as printed.") +
       bottom("Bottom line", `The scorecard <em>confirms the sweet spot</em> and is the reference for who counts as a top closer.`, `Ranks 3–4 handle <b>${pc(t34c, 1)}</b> of contacted orders and bring <b>${pc(t34s)}</b> of SOV. The CRM export shows the same picture for its top-5 closers. Every extra lead above 100 a day moves contacted orders from ranks 3–4 to ranks 1–2. Three totals are <b>measured on a different basis</b> in the two reports (SOV, calls, week start) and should be aligned with the data team before they are shown side by side.`) +
+      todayNote() +
       kpis([
         { label: "Ranks 3–4 · share of contacted", value: pc(t34c, 1), sub: `scorecard: 28.2% + 40.4%. They bring <b>${pc(t34s)}</b> of SOV`, cls: "accent-green", tag: "v" },
         { label: "Rank 4 · calls → SOV", value: `${pc(K[3].callsh)} → ${pc(K[3].sovsh)}`, sub: `of team calls → of team SOV. Rank 1: ${pc(K[0].callsh)} → ${pc(K[0].sovsh)}`, tag: "v" },
@@ -336,7 +342,7 @@
     const topN = [3, 4, 5].map((k) => { const s = T5.slice(0, k), c = s.reduce((a, r) => a + r.cont, 0), q = s.reduce((a, r) => a + r.acq, 0); return [{ v: "Top " + k, cls: "big" }, s.map((r) => r.name.split(" ")[0]).join(", "), n0(c), { v: pc(c / G.tot.cont * 100, 1), cls: "neon-pct" }, q, pc(q / G.tot.acq * 100, 1), pc(q / c * 100, 1), n0(c / G.weeks)]; });
     view(
       headline("Who should get the leads?", "Every rep in the CRM export, 1 Mar – 10 Nov 2026: contacted orders handled, new acquisitions closed, calls made.") +
-      bottom("Bottom line", `Give seniors <em>24 leads a shift</em> and newcomers <em>10</em>.`, `Top-5 closers turn <b>${n1(G.top.ac)}%</b> of contacted orders into acquisitions. Everyone else: <b>${n1(G.rest.ac)}%</b>. Newcomers in their first two months: <b class="r">${n1(G.new.ac)}%</b> (${G.new.acq} acquisitions from ${G.new.cont} contacted). A lead handed to a newcomer is worth about ${pc(wN * 100)} of one handed to a senior, so share the leads out in that proportion.`) +
+      bottom("Bottom line", `Leads go to the <em>top closers first</em>, newcomers last.`, `Top-5 closers turn <b>${n1(G.top.ac)}%</b> of contacted orders into acquisitions. Everyone else: <b>${n1(G.rest.ac)}%</b>. Newcomers in their first two months: <b class="r">${n1(G.new.ac)}%</b> (${G.new.acq} acquisitions from ${G.new.cont} contacted). A lead handed to a newcomer is worth about ${pc(wN * 100)} of one handed to a senior, so share the leads out in that proportion.`) +
       kpis([
         { label: "Top-5 closers · share of contacted", value: pc(G.top.sh, 1), sub: `and <b>${pc(G.top.ash, 1)}</b> of all new acquisitions`, cls: "accent-green", tag: "v" },
         { label: "Top-5 close rate", value: pc(G.top.ac, 2), sub: `acquisitions ÷ contacted. Rest of team <b>${pc(G.rest.ac, 2)}</b>`, tag: "v" },
@@ -351,17 +357,7 @@
         ["Rep", "Group", "Contacted", "Share of team", "Contacted a week", "New acquisitions", "Acquisitions ÷ contacted", "Registrations", "Calls", "Calls per contacted", "SOV", "SOV per contacted"],
         P.map((r) => [r.name, { v: r.g, cls: gc(r.g) }, n0(r.cont), pc(r.sh, 1), n1(r.cw), r.acq, { v: pc(r.ac, 1), cls: "neon-pct" }, r.regs, n0(r.calls), n1(r.cpc), usd(r.sov), usd(r.spc)]).concat([[{ v: "Team total", cls: "big" }, "", n0(G.tot.cont), "100%", n1(G.tot.cont / G.weeks), G.tot.acq, { v: pc(G.tot.acq / G.tot.cont * 100, 1), cls: "neon-pct" }, n0(G.tot.regs), n0(G.tot.calls), n1(G.tot.calls / G.tot.cont), usd(G.tot.sov), usd(G.tot.sov / G.tot.cont)]]),
         (i) => (i === P.length ? "tot" : "")) +
-      `<div class="charts-grid cols-2">` +
-      dataTable("Leads per rep per shift, by who is on the team", "100 leads a day = 700 a week, shared in proportion to close rate. Assumes 5 shifts a week per rep.",
-        ["Team", "Rep-shifts a week", "Leads per senior shift", "Leads per newcomer shift", "Plain average"],
-        comps.map(([s, n]) => { const a = alloc(s, n); return [{ v: `${s} seniors + ${n} new`, cls: "big" }, (s + n) * 5, { v: a[0], cls: "ok" }, n ? { v: a[1], cls: "no" } : "—", n1(700 / ((s + n) * 5))]; }),
-        (i) => (i === 0 ? "hl" : "")) +
-      dataTable("Team leads a day, by top closers working", "20 leads a day per top closer keeps the golden rule at 60% (tab 4).",
-        ["Top closers working", "Team leads a day", "Leads a week", "New acquisitions / month"],
-        [5, 4, 3].map((k) => { const L = k * 20, r = row(L); return [{ v: k, cls: "big" }, L, L * 7, n0(r.acq)]; }),
-        (i) => (i === 0 ? "hl" : "")) +
-      `</div>` +
-      verdict("What is assumed here", `<b>The CRM has no shift or hours log.</b> “Per shift” assumes each rep works 5 shifts a week; 20 a shift is 700 leads ÷ 35 rep-shifts. Groups: the five top closers named in the CEO Performance Suite, seniors with 6+ months, newcomers in their first two months. With a shift roster these become counted numbers.`, true)
+      verdict("Where the lead numbers are", `<b>Each rep's leads per shift, for whoever is working today, are on the Team Today tab.</b> Groups here: the five top closers named in the CEO Performance Suite, seniors with 6+ months, newcomers in their first two months. The CRM has no shift or hours log, so “per shift” assumes 5 shifts a week.`, true)
     );
     const colr = (g) => (g.indexOf("Top") === 0 ? C.emerald : g.indexOf("New") === 0 ? C.pink : g.indexOf("Senior") === 0 ? C.cyan : "rgba(148,163,184,0.45)");
     mkChart("rpA", { data: { labels: P.map((r) => r.name), datasets: [
@@ -377,6 +373,7 @@
     view(
       headline("What does each lead level return at $20, $23 and $29.70?", "ROI = SOV (new sales plus the add-ons that follow them) ÷ media cost of the leads. Three lead prices: $20 and $23 as asked, and $29.70, the real cost of the last 30 days.") +
       bottom("Bottom line", `Every level is profitable in total. <em>The last $1 is what changes.</em>`, `At 100 a day and $20 a lead: <b>${usdK(S.med20)} media → ${usdK(S.sov)} SOV = ${xx(S.roi20)}</b>. Pushing to 120 adds ${n1(r120.acq - S.acq)} acquisitions a month for ${usdK(r120.med20 - S.med20)} more media: <b class="r">${usd((r120.med20 - S.med20) / (r120.acq - S.acq))} each</b>, against ${usd(X.SPA)} of SOV. Cutting to 85 saves ${usdK(S.med20 - r85.med20)} and gives up ${n1(S.acq - r85.acq)} acquisitions that were paying for themselves.`) +
+      todayNote() +
       kpis([
         { label: "$20 a lead · 100 a day", value: xx(S.roi20), sub: `${usd(S.cpa20)} per acquisition · ${usdK(S.med20)} media a month`, cls: "accent-green", tag: "e" },
         { label: "$23 a lead · 95 a day", value: xx(S23.roi23), sub: `${usd(S23.cpa23)} per acquisition · ${usdK(S23.med23)} media a month`, tag: "e" },
@@ -471,23 +468,163 @@
           [{ v: "5 · Daily check", cls: "big" }, "182 open weekdays grouped by same-day leads; calls, contact rate and close rate per band; linear trends with p-values.", "Finds the daily ceiling the weekly view cannot see."],
           [{ v: "6 · Golden rule", cls: "big" }, "Regressed the top ranks' weekly share of contacted orders on leads a day (14 scorecard weeks), then repeated with capacity from the CRM rep table.", `Three routes to one number: ${T.crm}, ${T.er} and ${T.regr} leads a day at 60%.`],
           [{ v: "7 · Cross-check", cls: "big" }, "Put the scorecard next to the CRM export line by line. Weekly close rates correlate at r = 0.95 after aligning week starts.", "Two independent sources agree on who sells. Three totals are on a different basis and are flagged."],
+          [{ v: "8 · Today's team", cls: "big" }, "For each rep not disabled in the CRM: contacted orders a week ÷ contact rate = leads. The answer is the lowest of three limits: the reps' normal load, the 60% golden rule, and the lead-price step from the ladder.", "Ties the number to who is working today, rep by rep."],
+          [{ v: "9 · Last six weeks", cls: "big" }, "Compared 28 Sep – 8 Nov with the two six-week blocks before it; chi-square tests on acquisitions per lead and per contacted order; weekly media from the daily cost file from 13 Oct, monthly cost shared by leads before that.", "Shows what changed recently and whether the change is firm."],
         ]) +
       dataTable("What is still missing", "Each gap, and what would close it.",
         ["Gap", "Effect today", "What would close it"],
         [
-          ["No shift or hours log", "“Per rep per shift” is an assumption (5 shifts a week)", "A weekly roster by rep"],
+          ["No shift or hours log", "“Per rep per shift” is an assumption (5 shifts a week), and today's team is taken as the 9 reps not disabled in the CRM", "A weekly roster by rep"],
           ["No rep-by-day export", "The golden rule by day and by rep cannot be computed; weekly rank shares are used", "CRM rep pivot split by day or week"],
           ["No last-30-day rep export", "“Top reps in the past 30 days” uses the scorecard's 60-day ranks", "By-Rep pivot filtered to the last 30 days"],
           ["“Upsells” field empty", "Add-ons counted as registrations − acquisitions", "A true upsell flag from the data team"],
           ["Scorecard PDF shows rep rows for rank 1 and part of rank 2", "Ranks 3–4 used as groups, not by name", "Full export of the rep table"],
           ["SOV and calls are on a different basis in the scorecard and the CRM export", "ROI uses CRM SOV; on the scorecard's basis the sweet spot would be lower", "The data team's definition of SOV and calls in each report"],
         ]) +
-      verdict("Honest limits", `36 weeks is a small sample for a curve, which is why the answer is a 90–105 zone with 100 at its centre and not a single lead. The weeks were not an experiment: lead volume, lead price, team make-up and season all moved together. The clean test is to hold 100 a day for four weeks, then 110 for four, with the same team, and compare.`, true)
+      verdict("Honest limits", `36 weeks is a small sample for a curve, which is why the answer is a 90–105 zone with 100 at its centre and not a single lead. The weeks were not an experiment: lead volume, lead price, team make-up and season all moved together. The clean test with today's nine reps is to hold 85 a day for four weeks, then 90 for four, with the same team and no day at 150 or more, and compare new acquisitions per 100 leads.`, true)
     );
   }
 
   // ── Router ──
-  const VIEWS = { overview: rOverview, ladder: rLadder, calls: rCalls, weekly: rWeekly, golden: rGolden, rank: rRank, reps: rReps, roi: rRoi, mix: rMix, method: rMethod };
+  // ===================== TEAM TODAY (rep by rep) =====================
+  const D2 = window.X2;
+  const CTR = X.cap.ctr / 100;                      // contacted orders ÷ leads, whole export
+  const CAP = { "20": 100, "23": 95, "29.7": 85 };  // sweet spot by lead price, from the ladder
+  const PLAB = { "20": "$20", "23": "$23", "29.7": "$29.70" };
+  const NEWLOAD = 14;                               // contacted a week per newcomer: 42–43 a week between three (CEO Suite weeks)
+  const TEAM = X.reps.filter((r) => r.g.indexOf("Left") !== 0 && r.g !== "Other").map((r) => {
+    const nw = r.g.indexOf("New") === 0, top = r.g.indexOf("Top") === 0;
+    return { name: r.name, short: r.name.split(" ").slice(0, -1).join(" "), g: top ? "Top closer" : nw ? "Newcomer" : "Senior", top, nw, load: nw ? NEWLOAD : r.cw, rate: nw ? G.new.ac : (r.acq / r.cont) * 100 };
+  });
+  let teamOn = TEAM.map(() => true), teamPrice = "29.7";
+  function plan(on, price) {
+    const act = TEAM.filter((t, i) => on[i]);
+    const load = act.reduce((a, t) => a + t.load, 0), topLoad = act.filter((t) => t.top).reduce((a, t) => a + t.load, 0), rest = load - topLoad;
+    const byLoad = load / CTR / 7, byGold = topLoad / 0.6 / CTR / 7, byPrice = CAP[price];
+    const kRest = rest > 0 && byGold < byLoad ? (topLoad / 0.6 - topLoad) / rest : 1;   // golden rule: trim the others until top closers hold 60%
+    const L1 = Math.min(byLoad, byGold), kAll = byPrice < L1 ? byPrice / L1 : 1;        // lead price: trim everyone
+    const L = L1 * kAll, bind = !act.length ? "none" : byPrice < L1 ? "price" : byGold < byLoad ? "gold" : "load";
+    const reps = TEAM.map((t, i) => { const k = on[i] ? (t.top ? 1 : kRest) * kAll : 0, cont = t.load * k, wk = cont / CTR; return Object.assign({}, t, { on: on[i], cont, wk, shift: wk / 5, day: wk / 7, acq: (cont * t.rate) / 100 * MO }); });
+    const cont = reps.reduce((a, r) => a + r.cont, 0), topCont = reps.filter((r) => r.top).reduce((a, r) => a + r.cont, 0);
+    return { n: act.length, nTop: act.filter((t) => t.top).length, nNew: act.filter((t) => t.nw).length, load, byLoad, byGold, byPrice, L, L5: Math.round(L / 5) * 5, bind, reps, cont, share: cont ? (topCont / cont) * 100 : 0, acq: reps.reduce((a, r) => a + r.acq, 0) };
+  }
+  const allOn = () => TEAM.map(() => true);
+  const without = (names) => TEAM.map((t) => !names.some((n) => t.name.indexOf(n) === 0));
+  const BINDTXT = { load: "What these reps normally carry", gold: "Golden rule (top closers at 60%)", price: "Lead price", none: "—" };
+
+  function rTeam() {
+    const P = plan(teamOn, teamPrice), act = P.reps.filter((r) => r.on);
+    const why = P.bind === "load" ? `These reps normally carry <b>${n0(P.load)} contacted orders a week</b>. At the team's ${pc(CTR * 100, 1)} contact rate that takes <b>${n0(P.L * 7)} leads a week</b>. Buy more and the extra leads wait, get fewer calls, or land on the weakest closers.`
+      : P.bind === "gold" ? `With this roster the top closers would handle <b>under 60%</b> of contacted orders. The total is cut until they are back at 60%: the other reps get fewer leads, the top closers keep theirs.`
+      : P.bind === "price" ? `These reps could carry ${n0(P.byLoad)} a day, but at <b>${PLAB[teamPrice]} a lead</b> the last leads stop paying above <b>${P.byPrice} a day</b> (tab 1).`
+      : "Tick at least one rep.";
+    const scen = [["All nine in", allOn()], ["Levy out", without(["Levy"])], ["Levite and Mokla out (the 2–8 Nov roster)", without(["Levite", "Mokla"])], ["No newcomers: the six seniors only", TEAM.map((t) => !t.nw)], ["The five top closers only", TEAM.map((t) => t.top)]];
+    view(
+      headline("How many leads for the team we have today, rep by rep?", `The ${TEAM.length} reps not marked disabled in the CRM on 10 Nov 2026: ${TEAM.filter((t) => t.top).length} top closers, ${TEAM.filter((t) => !t.top && !t.nw).length} senior, ${TEAM.filter((t) => t.nw).length} newcomers. Tick who is working and pick the lead price. Every number below recalculates.`) +
+      `<div class="ctl"><div class="ctl-row"><div class="ctl-l">Who is in</div><div class="chips">${TEAM.map((t, i) => `<button class="chip${teamOn[i] ? " on" : ""}${t.nw ? " nw" : t.top ? " tp" : ""}" data-i="${i}" aria-pressed="${teamOn[i]}">${t.short}<small>${t.g}</small></button>`).join("")}</div></div>` +
+      `<div class="ctl-row"><div class="ctl-l">Lead price</div><div class="chips">${["20", "23", "29.7"].map((p) => `<button class="chip pr${teamPrice === p ? " on" : ""}" data-p="${p}" aria-pressed="${teamPrice === p}">${PLAB[p]}<small>${p === "29.7" ? "last 30 days" : "target"}</small></button>`).join("")}</div></div></div>` +
+      bottom("Bottom line · this roster", `<em>${P.L5} leads a day</em> for ${P.n} rep${P.n === 1 ? "" : "s"}. ${n0(P.L5 * 7)} a week.`, why) +
+      kpis([
+        { label: "Leads a day · this roster", value: String(P.L5), sub: `exact ${n1(P.L)}, rounded to the nearest 5`, cls: "accent-green", tag: "e" },
+        { label: "Leads a week · a month", value: n0(P.L5 * 7), sub: `<b>≈ ${n0(P.L5 * 30.4)}</b> a month`, tag: "e" },
+        { label: "Top closers' share of contacted", value: pc(P.share), sub: `${P.nTop} of 5 top closers in. Golden rule floor: 60%`, cls: P.share < 59.95 ? "accent-red" : "", tag: "e" },
+        { label: "New acquisitions a month", value: n0(P.acq), sub: "each rep at their own close rate", tag: "e" },
+      ]) +
+      dataTable("The plan, rep by rep", `Contacted orders a week = what each rep carried on average from 1 Mar to 10 Nov, absences included. Leads = contacted orders ÷ ${pc(CTR * 100, 1)} contact rate. Per shift assumes 5 shifts a week. Newcomers: ${NEWLOAD} contacted a week each and the group's ${pc(G.new.ac, 1)} close rate. The 36-week curve gives ${n0(row(85).acq)} new acquisitions a month at 85 a day because it includes reps who have since left.`,
+        ["Rep", "Group", "In", "Close rate", "Contacted orders a week", "Leads a week", "Leads per shift", "Leads a day (7-day)", "New acquisitions a month"],
+        P.reps.map((r) => [r.short, { v: r.g, cls: r.top ? "ok" : r.nw ? "no" : "" }, r.on ? { v: "✓", cls: "ok" } : { v: "out", cls: "mut" }, pc(r.rate, 1), r.on ? n1(r.cont) : "—", r.on ? n0(r.wk) : "—", r.on ? { v: n0(r.shift), cls: "big" } : "—", r.on ? n1(r.day) : "—", r.on ? n1(r.acq) : "—"])
+          .concat([[{ v: "This roster", cls: "big" }, `${P.n} reps`, "", pc(P.cont ? (P.acq / MO / P.cont) * 100 : 0, 1), n0(P.cont), n0(P.L * 7), act.length ? n1((P.L * 7) / (act.length * 5)) : "—", n1(P.L), n0(P.acq)]]),
+        (i) => (i === TEAM.length ? "tot" : !P.reps[i].on ? "off" : "")) +
+      dataTable("Three limits. The lowest one is the answer.", "Each limit is a separate test. The roster above is checked against all three.",
+        ["Limit", "What it means", "Leads a day", "Sets the answer?"],
+        [["What these reps normally carry", `${n0(P.load)} contacted orders a week ÷ ${pc(CTR * 100, 1)} contact rate ÷ 7 days`, n1(P.byLoad), P.bind === "load"],
+         ["Golden rule", "Top closers keep at least 60% of contacted orders", P.nTop ? n1(P.byGold) : "—", P.bind === "gold"],
+         ["Lead price " + PLAB[teamPrice], "The step where the last 5 leads still pay for themselves (tab 1)", String(P.byPrice), P.bind === "price"]]
+          .map((r) => [{ v: r[0], cls: "big" }, r[1], r[2], r[3] ? { v: "✓ this one", cls: "ok" } : { v: "no", cls: "mut" }]),
+        (i) => ((i === 0 && P.bind === "load") || (i === 1 && P.bind === "gold") || (i === 2 && P.bind === "price") ? "hl" : "")) +
+      dataTable("The same sum for other rosters", "Fixed examples, so the room can see how the answer moves with who is in.",
+        ["Roster", "Reps", "Leads a day at $29.70", "At $23", "At $20", "What sets it at $29.70", "Top closers' share"],
+        scen.map(([n, on]) => { const a = plan(on, "29.7"), b = plan(on, "23"), c = plan(on, "20"); return [{ v: n, cls: "big" }, a.n, { v: a.L5, cls: "big" }, b.L5, c.L5, BINDTXT[a.bind], pc(a.share)]; }),
+        (i) => (i === 0 ? "hl" : "")) +
+      ins([
+        { h: "Check against a real week", big: "2–8 Nov: plan 65, bought 79", b: `Levite and Mokla logged no calls that week (CEO Performance Suite). This sum gives <b>65 a day</b> for that roster. The team received <b>79 a day</b>, with 165 on the Thursday, and closed <b>6 new acquisitions</b> against 18–24 in the weeks before.`, c: C.red },
+        { h: "Normal week or full house", big: "85 normal · up to 95 full house", b: `85 uses each rep's average week, absences included. In four CEO Suite weeks with all five top closers on the phones, the five carried <b>142–179</b> contacted orders against their 138 average. That lifts the load limit to about <b>95</b>, and those leads only pay at $23 or less.`, c: C.cyan },
+        { h: "What it takes to reach 100", big: "+39 contacted orders a week", b: `100 a day makes about 246 contacted orders a week. Today's nine normally carry ${n0(plan(allOn(), "20").load)}. The gap is about <b>two more closers at Levite's load</b>, with leads back at $20. Delacroix, who left, carried 17 a week at a 10.1% close rate.`, c: C.amber },
+      ]) +
+      verdict("What is assumed here", `<b>No file says who is on shift today, so the roster is yours to tick.</b> “In the CRM, not disabled” is the starting list. Loads are whole-period averages by rep; a rep-by-week export would replace them with counted weeks. Five shifts a week per rep is assumed. The newcomer load is a group estimate; Lemma carries most of it today.`, true)
+    );
+    document.querySelectorAll(".chip[data-i]").forEach((b) => b.addEventListener("click", () => { const i = +b.dataset.i, y = window.scrollY; teamOn[i] = !teamOn[i]; rTeam(); window.scrollTo(0, y); }));
+    document.querySelectorAll(".chip[data-p]").forEach((b) => b.addEventListener("click", () => { const y = window.scrollY; teamPrice = b.dataset.p; rTeam(); window.scrollTo(0, y); }));
+  }
+
+  // ===================== LAST 6 WEEKS =====================
+  function rDecline() {
+    const B = {}; D2.B.forEach((b) => { B[b.k] = b; });
+    const s6 = B.s6, p6 = B.p6, l6 = B.l6, a3 = B.l6a, b3 = B.l6b, st = D2.st;
+    const W = D2.wk.filter((w) => w.n === 7), last6 = W.slice(-6), part = D2.wk[D2.wk.length - 1];
+    const chg = (a, b, goodUp, pts) => { const d = pts ? a - b : (a / b - 1) * 100, good = goodUp ? d > 0 : d < 0, flat = Math.abs(d) < (pts ? 0.25 : 2.5); return { v: (d > 0 ? "+" : "−") + (pts ? Math.abs(d).toFixed(1) + " pts" : Math.abs(d).toFixed(0) + "%"), cls: flat ? "mut" : good ? "ok" : "no" }; };
+    const M = [
+      ["Leads a day", (b) => n1(b.lpd), "lpd", null], ["Media a week", (b) => usd(b.cost), "cost", false], ["Media per lead", (b) => "$" + n2(b.lcost), "lcost", false],
+      ["Calls per lead", (b) => n2(b.cpl), "cpl", true], ["Contact rate (contacted ÷ leads)", (b) => pc(b.ctr, 1), "ctr", true, true], ["Contacted orders a week", (b) => n0(b.cont), "cont", true],
+      ["New acquisitions a week", (b) => n1(b.acq), "acq", true], ["Close rate (acquisitions ÷ contacted)", (b) => pc(b.ac, 1), "ac", true, true], ["New acquisitions per 100 leads", (b) => n2(b.a100), "a100", true],
+      ["Media per new acquisition", (b) => usd(b.cpa), "cpa", false], ["Registrations a week", (b) => n1(b.regs), "regs", true], ["of which add-ons", (b) => n1(b.add), "add", true],
+      ["SOV a week", (b) => usd(b.sov), "sov", true], ["ROI (SOV ÷ media)", (b) => xx(b.roi), "roi", true], ["Days with 150+ leads", (b) => String(b.d150), "d150", null],
+    ];
+    const erTop = {}; ER.wk.forEach((w) => { erTop[w.s] = w.top; });
+    const sunBefore = (s) => { const d = new Date(s + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); };
+    const NOTE = { "2026-09-28": "All five in", "2026-10-05": "Levite 89 calls (others 273–674)", "2026-11-02": "Levite and Mokla: no calls" };
+    const gap6 = last6.reduce((a, w) => a + w.exp, 0), act6 = last6.reduce((a, w) => a + w.acq, 0), lw = last6[5];
+    view(
+      headline("What happened in the last six weeks?", `${l6.lab} 2026 against the six weeks before (${p6.lab}) and the summer six (${s6.lab}). Full Monday–Sunday weeks from the CRM by-day export and the media-cost exports.`) +
+      bottom("Bottom line", `<em class="r">${pc((l6.lpd / p6.lpd - 1) * 100)} more leads. ${pc((l6.cost / p6.cost - 1) * 100)} more media. ${pc((1 - l6.acq / p6.acq) * 100)} fewer new acquisitions.</em>`, `Each new acquisition cost <b>${usd(l6.cpa)}</b> in media, against <b>${usd(p6.cpa)}</b> in the six weeks before and <b>${usd(s6.cpa)}</b> in the summer. ROI fell from <b>${xx(p6.roi)}</b> to <b>${xx(l6.roi)}</b>, and to <b>${xx(b3.roi)}</b> in the last three weeks. The team was fed <b>${n0(l6.lpd)} leads a day</b>. Today's nine reps and today's lead price both say <b>85</b> (Team Today tab).`) +
+      kpis([
+        { label: "Leads a day", value: n0(l6.lpd), sub: `six weeks before <b>${n0(p6.lpd)}</b> · summer <b>${n0(s6.lpd)}</b>`, cls: "accent-amber", tag: "v" },
+        { label: "New acquisitions a week", value: n1(l6.acq), sub: `six weeks before <b>${n1(p6.acq)}</b> · summer <b>${n1(s6.acq)}</b>`, cls: "accent-red", tag: "v" },
+        { label: "Media per new acquisition", value: usd(l6.cpa), sub: `six weeks before <b>${usd(p6.cpa)}</b> · summer <b>${usd(s6.cpa)}</b>`, cls: "accent-red", tag: "e" },
+        { label: "ROI · SOV ÷ media", value: xx(l6.roi), sub: `six weeks before <b>${xx(p6.roi)}</b> · summer <b>${xx(s6.roi)}</b>`, cls: "accent-red", tag: "e" },
+      ]) +
+      kpis([
+        { label: "New acquisitions per 100 leads", value: n2(l6.a100), sub: `six weeks before <b>${n2(p6.a100)}</b> · summer <b>${n2(s6.a100)}</b> (${pv(st.a100_l6_s6)} vs summer)`, tag: "v" },
+        { label: "Contact rate", value: pc(l6.ctr, 1), sub: `six weeks before <b>${pc(p6.ctr, 1)}</b> (${pv(st.ctr_l6_p6)})`, tag: "v" },
+        { label: "Close rate · last 3 weeks", value: pc(b3.ac, 1), sub: `first three of the six <b>${pc(a3.ac, 1)}</b> · summer <b>${pc(s6.ac, 1)}</b>`, cls: "accent-red", tag: "v" },
+        { label: "Media per lead · last 3 weeks", value: "$" + n2(b3.lcost), sub: `first three of the six <b>$${n2(a3.lcost)}</b> · six weeks before <b>$${n2(p6.lcost)}</b>`, cls: "accent-red", tag: "v" },
+      ]) +
+      `<div class="charts-grid cols-2">` +
+      chartCard("dcA", "More leads in, fewer new acquisitions out of each 100", "Bars: leads a day, week by week (red = the last six weeks). Line: new acquisitions per 100 leads.", 400) +
+      chartCard("dcB", "ROI fell as the lead price rose", "Line: SOV ÷ media, week by week. Bars: media per lead. Before 13 Oct the weekly media is the month's cost shared out by leads.", 400) +
+      `</div>` +
+      dataTable("Three six-week blocks, side by side", "Weekly averages. Green = better than the comparison block, red = worse. Media before 13 Oct is the monthly cost shared out by leads (estimated); from 13 Oct it is the daily cost file.",
+        ["Measure", "Summer six · " + s6.lab, "Six before · " + p6.lab, "Last six · " + l6.lab, "Last six vs six before", "Last six vs summer"],
+        M.map((m) => [{ v: m[0], cls: "big" }, m[1](s6), m[1](p6), { v: m[1](l6), cls: "big" }, m[3] === null ? { v: m[2] === "lpd" ? "+" + pc((l6.lpd / p6.lpd - 1) * 100) : "+" + (l6.d150 - p6.d150), cls: "mut" } : chg(l6[m[2]], p6[m[2]], m[3], m[4]), m[3] === null ? { v: m[2] === "lpd" ? "+" + pc((l6.lpd / s6.lpd - 1) * 100) : "+" + (l6.d150 - s6.d150), cls: "mut" } : chg(l6[m[2]], s6[m[2]], m[3], m[4])]),
+        (i) => (M[i][2] === "acq" || M[i][2] === "cpa" || M[i][2] === "roi" ? "hl" : "")) +
+      dataTable("The six weeks, one by one", "“Curve expected” = what the 36-week model gives at that week's lead volume. Top ranks' share is from the Employee Rank scorecard, whose weeks start on the Sunday. Top-closer notes are from the CEO Performance Suite, for the weeks it covers.",
+        ["Week", "Leads a day", "Biggest day", "Contact rate", "New acquisitions", "Curve expected", "Close rate", "Per 100 leads", "Registrations", "SOV", "Media per lead", "ROI", "Top ranks' share", "Top closers"],
+        last6.map((w) => { const t = erTop[sunBefore(w.s)]; return [dt(w.s), n0(w.lpd), w.mx >= 150 ? { v: w.mx, cls: "no" } : w.mx, pc(w.ctr, 1), w.acq < 15 ? { v: w.acq, cls: "no" } : w.acq, n0(w.exp), w.ac < 8 ? { v: pc(w.ac, 1), cls: "no" } : pc(w.ac, 1), n2(w.a100), w.regs, usdK(w.sov), "$" + n2(w.lc), w.roi < 1.5 ? { v: xx(w.roi), cls: "no" } : xx(w.roi), t == null ? "—" : t < 59 ? { v: pc(t), cls: "no" } : t < 61 ? pc(t) : { v: pc(t), cls: "ok" }, NOTE[w.s] || "—"]; })
+          .concat([[`${dt(part.s)} (2 days)`, n0(part.lpd), part.mx, pc(part.ctr, 1), part.acq, "—", pc(part.ac, 1), n2(part.a100), part.regs, usdK(part.sov), "$" + n2(part.lc), xx(part.roi), "—", "—"]]),
+        (i) => (i === 6 ? "off" : "")) +
+      sec("Three things changed at once") +
+      ins([
+        { h: "1 · Volume above the team", big: `4 of 6 weeks at 109–116 a day`, b: `Against <b>${n0(p6.lpd)}</b> a day in the six weeks before. Four days brought 150 or more leads, one of them <b>252</b>. Calls per lead fell from ${n2(p6.cpl)} to ${n2(l6.cpl)} and the contact rate from ${pc(p6.ctr, 1)} to ${pc(l6.ctr, 1)}.`, c: C.amber },
+        { h: "2 · Price", big: `$${n2(p6.lcost)} → $${n2(b3.lcost)} a lead`, b: `Media per lead was $${n2(a3.lcost)} in the first three of the six weeks and <b>$${n2(b3.lcost)}</b> in the last three. At that price a new acquisition cost <b>${usd(b3.cpa)}</b> in media, more than the ${usd(X.SPA)} of SOV an average new acquisition brings.`, c: C.red },
+        { h: "3 · People", big: "Top ranks at or under 60% for 5 weeks", b: `The scorecard's ranks 3–4 handled 42–60% of contacted orders in the five weeks from 27 Sep to 31 Oct. Rank 4's close rate went from 10.9% to 4.0% after 18 Oct (p = 0.008). In 2–8 Nov Levite and Mokla logged no calls and the week closed <b>${lw.acq}</b>.`, c: C.pink },
+      ]) +
+      ins([
+        { h: "What did not fall", big: `SOV held at ${usdK(l6.sov)} a week`, b: `Registrations stayed at <b>${n1(l6.regs)}</b> a week (${n1(p6.regs)} before) because add-ons to existing customers rose from ${n1(p6.add)} to <b>${n1(l6.add)}</b> a week. New customers are what fell, and they are what the leads are bought for.`, c: C.emerald },
+        { h: "Was the curve wrong?", big: `Expected ${n0(gap6)}, got ${act6}`, b: `Over the six weeks the 36-week curve expected ${n0(gap6)} new acquisitions at these volumes; the team closed ${act6}. Five weeks were on the curve. The last week expected ${n0(lw.exp)} and closed <b>${lw.acq}</b>: that gap is roster, not volume.`, c: C.cyan },
+        { h: "How firm is it", big: "Firm against summer. Not yet against the six before.", b: `New acquisitions per 100 leads: last six vs summer ${pv(st.a100_l6_s6)}; vs the six before ${pv(st.a100_l6_p6)}, so not yet firm. Close rate fell about <b>1 point a week</b> across the six (${pv(st.ac_slope_p)}). The last week alone is below every other week (${pv(st.ac_last_rest)}).`, c: C.indigo },
+      ]) +
+      verdict("What to do this week", `<b>Buy 85 a day for today's nine reps, not 100+.</b> Keep every single day under 150. Put the leads on the top closers first (Team Today tab gives each rep's number). Push the lead price back toward $23: at $${n2(b3.lcost)} a new acquisition costs more in media than it returns. Then step up 5 a day at a time and watch new acquisitions per 100 leads: it should be back above ${n1(p6.a100)}.`)
+    );
+    mkChart("dcA", { data: { labels: W.map((w) => dt(w.s)), datasets: [
+      { type: "line", label: "New acquisitions per 100 leads", data: W.map((w) => w.a100), borderColor: C.amber, backgroundColor: C.amber, yAxisID: "y1", tension: 0.25, pointRadius: 4, borderWidth: 3 },
+      { type: "bar", label: "Leads a day", data: W.map((w) => w.lpd), backgroundColor: W.map((w, i) => (i >= W.length - 6 ? "rgba(239,68,68,0.75)" : "rgba(99,102,241,0.55)")), borderRadius: 4, datalabels: dl("#fff", (v) => Math.round(v), { anchor: "start", align: "end", rotation: -90, font: { size: 12, weight: "700" } }) },
+    ] }, options: base({ plugins: { legend: leg, tooltip: tip, annotation: { annotations: { s: hline(85, "85 a day", C.cyan) } } }, scales: { x: ax("Week starting", { grid: { display: false }, ticks: { color: C.textSec, font: { size: 12 }, maxRotation: 60, minRotation: 45 } }), y: ax("Leads a day", { beginAtZero: true, max: 140 }), y1: ax("New acquisitions per 100 leads", { position: "right", beginAtZero: true, max: 7, grid: { display: false }, ticks: tk((v) => v, C.amber) }) } }) });
+    mkChart("dcB", { data: { labels: W.map((w) => dt(w.s)), datasets: [
+      { type: "line", label: "ROI (SOV ÷ media)", data: W.map((w) => w.roi), borderColor: C.emerald, backgroundColor: C.emerald, tension: 0.25, pointRadius: 4, borderWidth: 3 },
+      { type: "bar", label: "Media per lead", data: W.map((w) => w.lc), yAxisID: "y1", backgroundColor: W.map((w, i) => (i >= W.length - 6 ? "rgba(239,68,68,0.6)" : "rgba(148,163,184,0.3)")), borderRadius: 4 },
+    ] }, options: base({ plugins: { legend: leg, tooltip: tip, annotation: { annotations: { s: hline(1, "1.0x = media only just paid back", C.red) } } }, scales: { x: ax("Week starting", { grid: { display: false }, ticks: { color: C.textSec, font: { size: 12 }, maxRotation: 60, minRotation: 45 } }), y: ax("ROI", { beginAtZero: true, max: 4, ticks: tk((v) => v.toFixed(1) + "x") }), y1: ax("Media per lead", { position: "right", beginAtZero: true, max: 40, grid: { display: false }, ticks: tk((v) => "$" + v) }) } }) });
+  }
+  const VIEWS = { overview: rOverview, team: rTeam, decline: rDecline, ladder: rLadder, calls: rCalls, weekly: rWeekly, golden: rGolden, rank: rRank, reps: rReps, roi: rRoi, mix: rMix, method: rMethod };
   const navItems = document.querySelectorAll(".nav-item");
   const sidebar = $("#sidebar"), overlay = $("#sidebarOverlay"), menuToggle = $("#menuToggle");
   const closeMobile = () => { sidebar.classList.remove("open"); overlay.classList.remove("active"); };
