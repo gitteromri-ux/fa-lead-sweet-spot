@@ -123,7 +123,7 @@
       chartCard("ldA", "New acquisitions a month at each step", "Line: best estimate. Shaded band: 95% range from 4,000 reshuffles of the 36 weeks.", 400) +
       chartCard("ldB", "What each extra acquisition costs at that step", `Bars at $20 a lead, line at $23. Above the ${usd(X.SPA)} line, the extra acquisition costs more than its SOV.`, 400) +
       `</div>` +
-      dataTable("The full ladder · every 5 leads a day", `SOV per new acquisition is ${usd(X.SPA)} and does not change with volume (p = 0.76). “Extra $ back” = SOV from the acquisitions added by the last 5 leads ÷ what those leads cost.`,
+      dataTable("The full ladder · every 5 leads a day", `SOV per new acquisition is ${usd(X.SPA)} over the 36 full weeks (${usd(X.groups.tot.sov / X.groups.tot.acq)} over the whole export) and does not change with volume (p = 0.76). “Extra $ back” = SOV from the acquisitions added by the last 5 leads ÷ what those leads cost.`,
         ["Leads a day", "Leads a week", "Leads a month", "New acquisitions / month", "95% range", "All registrations / month", "Added by last +5", "Cost per extra acquisition · $20", "Extra $ back per $1 · $20", "Extra $ back · $23", "Extra $ back · $29.70", "% of the 120-a-day sales"],
         R.map((r) => [{ v: r.L, cls: "big" }, n0(r.wk), n0(r.mo), n1(r.acq), `${n0(r.lo)}–${n0(r.hi)}`, n0(r.reg), "+" + n1(r.dA), { v: usd(r.mc20), cls: r.mc20 <= X.SPA ? "ok" : "no" }, { v: "$" + n2(r.back20), cls: r.back20 >= 1 ? "ok" : "no" }, { v: "$" + n2(r.back23), cls: r.back23 >= 1 ? "ok" : "no" }, { v: "$" + n2(r.back297), cls: r.back297 >= 1 ? "ok" : "no" }, pc(r.pct)]),
         (i) => (R[i].L === 100 ? "hl" : "")) +
@@ -413,12 +413,12 @@
     const short = (s) => s.replace("French Atelier: ", "FA ").replace("Let's Speak French", "LSF").replace("Cultural Capsule: ", "Capsule ").replace("The French Atelier", "FA").replace("LSF: ", "LSF ");
     view(
       headline("How much is new sales, and how much is add-ons?", "1 Mar – 10 Nov 2026. New acquisition = a customer's first paid course. Add-on = every further registration (registrations − acquisitions).") +
-      bottom("Bottom line", `<em>${pc(T.acq / T.regs * 100)} new, ${pc(add / T.regs * 100)} add-on.</em> ${T.acq} new acquisitions and ${add} add-on registrations.`, `Each new acquisition brings <b>${n2(X.RPA)} registrations</b> and <b>${usd(X.SPA)}</b> of SOV in total. At 100 leads a day that is about <b>${n0(S.acq)} new + ${n0(S.add)} add-on = ${n0(S.reg)} registrations a month</b>. Leads drive the new sales; the add-ons follow them.`) +
+      bottom("Bottom line", `<em>${pc(T.acq / T.regs * 100)} new, ${pc(add / T.regs * 100)} add-on.</em> ${T.acq} new acquisitions and ${add} add-on registrations.`, `Each new acquisition brings <b>${n2(T.regs / T.acq)} registrations</b> and <b>${usd(T.sov / T.acq)}</b> of SOV in total (${n2(X.RPA)} and ${usd(X.SPA)} over the 36 full weeks the ladder uses). At 100 leads a day that is about <b>${n0(S.acq)} new + ${n0(S.add)} add-on = ${n0(S.reg)} registrations a month</b>. Leads drive the new sales; the add-ons follow them.`) +
       kpis([
         { label: "New acquisitions", value: n0(T.acq), sub: `${pc(T.acq / T.regs * 100)} of ${n0(T.regs)} registrations`, cls: "accent-green", tag: "v" },
         { label: "Add-on registrations", value: n0(add), sub: `${pc(add / T.regs * 100)} of registrations`, tag: "v" },
         { label: "Let's Speak French", value: n0(lsfAdd), sub: `add-ons: ${pc(lsfAdd / add * 100)} of all add-ons · ${usdK(lsfSov)} SOV`, tag: "v" },
-        { label: "SOV, all registrations", value: usdK(T.sov), sub: `${usd(X.SPA)} per new acquisition`, tag: "v" },
+        { label: "SOV, all registrations", value: usdK(T.sov), sub: `${usd(T.sov / T.acq)} per new acquisition`, tag: "v" },
       ]) +
       `<div class="charts-grid cols-2">` +
       chartCard("mxA", "New acquisitions and add-ons, course by course", `Foundation is the door in: ${fnd.acq} of ${T.acq} new acquisitions. Let's Speak French is almost all add-on.`, 480) +
