@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>French Atelier · Lead Sweet Spot · Sales Team Capacity</title>
+<meta name="robots" content="noindex">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="data.js"></script>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0b0d'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23e9c27b'/%3E%3C/svg%3E">
+</head>
+<body>
+<nav class="top" aria-label="Tabs"><div class="wrap">
+  <span class="brand">French Atelier</span>
+  <div class="tabs"><a class="on" href="index.html" aria-current="page">1 · <span class="lg">Lead sweet spot</span><span class="sm">Sweet spot</span></a><a href="rank.html">2 · <span class="lg">Employee Rank cross-check</span><span class="sm">Rank check</span></a></div>
+</div></nav>
+<nav class="sub" aria-label="Sections"><div class="wrap">
+  <a href="#summary">Summary</a><a href="#ceiling">Call ceiling</a><a href="#peak">Where sales peak</a><a href="#weeks">Weeks</a><a href="#roi">ROI scenarios</a><a href="#reps">Reps &amp; golden rule</a><a href="#calc">Calculator</a><a href="#mix">New vs add-on</a><a href="#audit">Data &amp; method</a>
+</div></nav>
+<main>
+<header class="hero wrap" id="summary">
+  <div class="kick">French Atelier sales team · CRM export 1 Mar – 10 Nov 2026 · 255 full days</div>
+  <h1>How many leads a day<br>sells the <em>most</em>?</h1>
+  <p class="lede">We tested 182 open weekdays, 36 full weeks, 21,753 leads and 654 new acquisitions. The answer is a <b>daily load</b> rather than a budget: the team makes about 630 calls a day no matter how many leads arrive. Above roughly 150 leads a day, sales fall.</p>
+  <div class="hero-meta">
+    <span class="pill"><b>21,753</b> leads</span><span class="pill"><b>654</b> new acquisitions</span><span class="pill"><b>1,106</b> registrations</span><span class="pill"><b>114,024</b> calls</span><span class="pill"><b>$836K</b> SOV</span>
+  </div>
+  <div class="answer rv">
+    <div class="q">The answer</div>
+    <div class="a">Feed the team <span class="n">100–130 leads per open weekday</span> (target 120), <span class="n">≈720–770 a week</span>. Never go above <span class="x">150 leads in one day</span>.</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="grid g3" style="margin-top:8px">
+    <div class="card gold rv"><div class="lbl">Team sweet spot · per open weekday</div><div class="big">120<small>leads</small></div><div class="sub">Best range <b>100–130</b>. At 100–149 leads the team averaged <b>3.5–3.7 acquisitions a day</b>, its highest level.</div><span class="tag t-ver">Verified · CRM by-day</span></div>
+    <div class="card coral rv"><div class="lbl">The red line · 150+ leads in a day</div><div class="big">−29%<small>acqs/day</small></div><div class="sub">On 150+ lead days, acquisitions fell to <b>2.5 a day</b> and contacted-to-acquisition fell from <b>8.7% to 5.2%</b> (z = 2.53, p = 0.006).</div><span class="tag t-ver">Verified · 10 days vs 61 days</span></div>
+    <div class="card gold rv"><div class="lbl">Per rep · per shift</div><div class="big">≈17<small>leads</small></div><div class="sub">Calculation: 120 ÷ 7 reps on shift. Use <b>15</b> at 8 reps and <b>20</b> at 6 reps. The CRM export has no shift or hours data, so the 7-rep roster is an assumption.</div><span class="tag t-asm">Assumed roster · see calculator</span></div>
+    <div class="card mint rv"><div class="lbl">Highest-sales month · the plan</div><div class="big">≈94<small>acq / mo</small></div><div class="sub">Weeks with 700+ leads produced <b>21.6 acquisitions a week</b>, the most of any band. At 3,300 leads a month and $20–23 per lead, media costs <b>$66K–$76K</b>.</div><span class="tag t-est">Estimated from 8 weeks</span></div>
+    <div class="card coral rv"><div class="lbl">Hidden problem · real cost per lead</div><div class="big">$29.70</div><div class="sub">Last 30 days: <b>$89,068</b> media cost for <b>2,995</b> leads. The cost per lead was <b>$20–24 from March to September</b>. At $29.70, the max-sales plan returns only <b>1.14×</b>.</div><span class="tag t-ver">Verified · mCost export</span></div>
+    <div class="card mint rv"><div class="lbl">Biggest lever · who handles the lead</div><div class="big">9.0% <small>vs 3.8%</small></div><div class="sub">Seniors convert contacted leads to acquisitions at <b>9.0%</b>, and reps with 2 months or less convert at <b>3.8%</b>. Each 10 points of contacted leads moved to seniors adds an estimated <b>+3 to +5 acquisitions a month</b>.</div><span class="tag t-est">Estimate · CRM and rank scorecard</span></div>
+  </div>
+</div>
+
+<section id="ceiling"><div class="wrap">
+  <div class="kick">01 · Why there is a sweet spot</div>
+  <h2>The team has a <span class="g">call ceiling</span>. More leads mean fewer calls per lead.</h2>
+  <p class="lede">Daily leads rose 3.7× (48 → 177), but daily calls rose only 1.4× (482 → 670). As a result, calls per lead fell from <b>10.0 to 3.8</b>. After controlling for month and weekday, each +100 leads a day removes <b>6.2 calls per lead</b> (p &lt; 0.001) and <b>8.3 points of contact rate</b> (p = 0.003).</p>
+  <div class="chartbox rv"><h3>Calls per day plateau, so calls per lead fall</h3><div class="cap">Open weekdays (Mon–Fri with calls logged), grouped by leads that day. n = 182 days.</div><div class="cv"><canvas id="c1" role="img" aria-label="Calls per day and calls per lead by daily lead band"></canvas></div>
+  <div class="legend"><span><i style="background:rgba(233,194,123,.75)"></i>Calls per day (left axis)</span><span><i style="background:#ff6b5a"></i>Calls per lead (right axis)</span><span><i style="background:#5fd3a5"></i>Your 10-calls-per-lead standard</span></div></div>
+  <div class="why">
+    <div class="step rv"><div class="no">1</div><h4>Calls are capped</h4><p>The team tops out around 630–670 calls a day. More leads don't create more calling hours.</p></div>
+    <div class="step rv"><div class="no">2</div><h4>Leads get thinner coverage</h4><p>At 150+ leads, each lead gets under 4 calls, well below your 10-call standard.</p></div>
+    <div class="step rv"><div class="no">3</div><h4>Selling quality drops</h4><p>Reps rush. Contacted leads convert at 5.2% instead of 8.7%, so more leads produce fewer sales.</p></div>
+  </div>
+</div></section>
+
+<section id="peak"><div class="wrap">
+  <div class="kick">02 · Where sales peak</div>
+  <h2>Acquisitions per day climb until <span class="g">~130 leads</span>, then <span class="c">drop</span>.</h2>
+  <p class="lede">A Poisson regression controlling for month and weekday puts the peak at <b>120 leads a day</b> (bootstrap middle 50%: 99–138). This curve is a supporting signal, not proof. After the controls, the curve term is not significant on its own (p = 0.13), so the decision rests on the band results: <b>150+ days are clearly worse</b>.</p>
+  <div class="chartbox rv"><h3>Average acquisitions per open weekday, by daily lead load</h3><div class="cap">Bars show the average. Thin lines show the 95% bootstrap range. The gold band is the sweet spot.</div><div class="cv"><canvas id="c2" role="img" aria-label="Acquisitions per day by lead band"></canvas></div></div>
+  <div class="tbl rv"><table>
+    <thead><tr><th>Leads that day</th><th class="n">Days</th><th class="n">Acq / day</th><th class="n">95% range</th><th class="n">Calls / lead</th><th class="n">Contact rate</th><th class="n">Acq / contacted</th><th class="n">Acq per 100 leads</th></tr></thead>
+    <tbody id="bandT"></tbody></table></div>
+  <p class="note">Contact rate = leads created that day that were contacted ÷ leads (CRM “%Cont from Lds”). Acquisition is counted on the day it closed, not the lead's day, so daily figures have lag noise. The week view below removes that noise.</p>
+</div></section>
+
+<section id="weeks"><div class="wrap">
+  <div class="kick">03 · Week view, lag removed</div>
+  <h2>Weekly: more leads still add sales, but <span class="g">each 100 leads buys less</span>.</h2>
+  <p class="lede">Over 36 full Mon–Sun weeks, the 700+ lead weeks sold the most: <b>21.6 acquisitions a week</b>. But acquisitions per 100 leads fell from <b>3.5 to 2.8</b>. Weekly sales follow calls (r = 0.46) and selling quality (acquisitions ÷ contacted, r = 0.75) more than raw leads (r = 0.37).</p>
+  <div class="chartbox rv"><h3>All 36 weeks: leads vs acquisitions</h3><div class="cap">Each dot is one Mon–Sun week, 2 Mar – 8 Nov 2026. Hover for the week.</div><div class="cv"><canvas id="c3" role="img" aria-label="Weekly leads vs acquisitions scatter"></canvas></div></div>
+</div></section>
+
+<section id="roi"><div class="wrap">
+  <div class="kick">04 · ROI scenarios, sales first</div>
+  <h2>Max sales costs <span class="g">$710–$816 per acquisition</span>, if the cost per lead returns to $20–23.</h2>
+  <p class="lede">The scenarios come from real weeks in each band, scaled to a month (× 4.33). <b>We don't cut sales to look efficient.</b> “Base” has the best return, but it sells about <b>20 fewer acquisitions a month</b> than “Max sales”. ROI = SOV ÷ media cost.</p>
+  <div style="display:flex;gap:10px;margin-top:26px;flex-wrap:wrap" role="group" aria-label="Cost per lead">
+    <button class="cplb pill" data-p="20" style="cursor:pointer">CPL $20</button><button class="cplb pill" data-p="23" style="cursor:pointer">CPL $23</button><button class="cplb pill" data-p="29.7" style="cursor:pointer">CPL $29.70 (real, last 30 days)</button>
+  </div>
+  <div class="tbl rv"><table>
+    <thead><tr><th>Scenario</th><th class="n">Leads / week</th><th class="n">Leads / month</th><th class="n">Acq / month</th><th class="n">Media / month</th><th class="n">Cost per acq</th><th class="n">Cost of each extra acq</th><th class="n">SOV / month</th><th class="n">ROI</th></tr></thead>
+    <tbody id="scenT"></tbody></table></div>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card gold rv"><div class="lbl">Recommendation</div><div class="sub" style="font-size:19px;margin-top:10px;color:var(--tx)"><b>Run “Max sales”: 720–770 leads a week, capped at 150 a day.</b> Spreading the same volume evenly avoids the 150+ days that cost sales in the 700+ weeks.</div></div>
+    <div class="card coral rv"><div class="lbl">Condition</div><div class="sub" style="font-size:19px;margin-top:10px;color:var(--tx)">Bring the cost per lead back to <b>$20–23</b>. At $29.70, the same plan costs <b>$98.7K a month</b> and returns <b>1.14×</b>.</div></div>
+    <div class="card mint rv"><div class="lbl">Upside not in the table</div><div class="sub" style="font-size:19px;margin-top:10px;color:var(--tx)">Routing contacted leads to seniors (section 05) is worth an estimated <b>+3 to +5 acquisitions a month per 10 points</b> of contacted share, with no extra media. The low end comes from the data team's rank scorecard (<a class="inl" href="rank.html#conv">tab 2</a>).</div></div>
+  </div>
+  <p class="note">Band sizes: &lt;500 = 4 weeks, 500–599 = 17, 600–699 = 7, 700+ = 8. Monthly acquisition ranges (95%, bootstrapped): Lean 48–76, Base 59–89, Push 71–91, Max sales 79–108. SOV includes add-on registrations from existing customers, so ROI is a team-level return, not a pure new-lead return.</p>
+</div></section>
+
+<section id="reps"><div class="wrap">
+  <div class="kick">05 · Golden rule &amp; seniority</div>
+  <h2>Who handles the contacted lead matters <span class="g">more than lead volume</span>.</h2>
+  <p class="lede">Golden rule = the top reps' share of all contacted orders. The top five (highest acquisitions ÷ contacted plus the biggest sellers: <b>Azizi, Levy, Mokla, Petit, Levite</b>) handled <b>65.7%</b> of contacted orders and closed <b>72.5%</b> of acquisitions. They convert at <b>9.5%</b>, and everyone else converts at <b>6.9%</b>.</p>
+  <div class="grid g4" style="margin-top:34px">
+    <div class="card gold rv"><div class="lbl">Top-5 share of contacted</div><div class="big">65.7%</div><div class="sub">5,015 of 7,633 contacted orders</div></div>
+    <div class="card gold rv"><div class="lbl">Top-5 share of acquisitions</div><div class="big">72.5%</div><div class="sub">474 of 654</div></div>
+    <div class="card mint rv"><div class="lbl">Seniors (6+ mo) acq / contacted</div><div class="big">9.0%</div><div class="sub">542 ÷ 6,007 · 6 active seniors</div></div>
+    <div class="card coral rv"><div class="lbl">Newcomers (≤2 mo) acq / contacted</div><div class="big">3.8%</div><div class="sub">12 ÷ 313 · Lacroix, Lemma, Stefaoui, Dubois</div></div>
+  </div>
+  <div class="tbl rv"><table>
+    <thead><tr><th>Rep</th><th>Tenure</th><th class="n">Contacted</th><th class="n">Share of team</th><th class="n">Acq</th><th class="n">Acq / contacted</th><th class="n">Calls / contacted</th><th class="n">Regs</th></tr></thead>
+    <tbody id="repT"></tbody></table></div>
+  <div class="chartbox rv"><h3>What newcomers cost: acquisitions lost per month</h3><div class="cap">Estimate: monthly contacted ≈ 1,000 (Oct: 1,091) × newcomer share × (9.0% − 3.8%). This assumes seniors have capacity to absorb the shifted leads. The data team's rank scorecard shows a smaller gap (9.6% vs 6.7% for rank 1), which roughly halves these bars.</div><div class="cv" style="height:360px"><canvas id="c4" role="img" aria-label="Acquisitions lost by newcomer share"></canvas></div></div>
+  <p class="note">Rep figures come from the by-Rep export for the full period (1 Mar – 11 Nov), because a last-30-day rep export was not included. Tenure groups come from the previous callcenter-kpi-dashboard tab. In that weekly view, newcomers handled 0% of contacted orders in late Aug and 26% in 2–8 Nov, the week the team sold 4–6 acquisitions. With only 5 weeks, the golden-rule effect over time is directional, not statistically proven. <b style="color:var(--tx)">Update:</b> the data team's Employee Rank scorecard is cross-checked in <a class="inl" href="rank.html">tab 2</a>. It confirms the top-rep split (ranks 3–4 handle 69% of contacted orders), and it shows the early-November drop hit every rank, so newcomer share explains only part of it.</p>
+</div></section>
+
+<section id="calc"><div class="wrap">
+  <div class="kick">06 · Plan any day</div>
+  <h2>Set tomorrow's leads and shift, and see the <span class="g">load per rep</span>.</h2>
+  <div class="calc">
+    <div class="ctl rv">
+      <label for="iL">Leads tomorrow <span id="vL">120</span></label><input id="iL" type="range" min="30" max="250" step="5" value="120">
+      <label for="iR">Reps on shift <span id="vR">7</span></label><input id="iR" type="range" min="3" max="12" step="1" value="7">
+      <label for="iN">Of them, newcomers (≤2 mo) <span id="vN">2</span></label><input id="iN" type="range" min="0" max="6" step="1" value="2">
+      <p class="hint" style="margin-top:18px">Acquisitions per day come from the band curve in section 02, adjusted for the shift's senior and newcomer mix (9.0% vs 3.8% acquisitions ÷ contacted). This is a planning estimate, not a forecast.</p>
+    </div>
+    <div class="out">
+      <div class="card rv"><div class="lbl">Leads per rep-shift</div><div class="big" id="oLR">17</div></div>
+      <div class="card rv"><div class="lbl">Expected calls per lead</div><div class="big" id="oCPL">5.3</div></div>
+      <div class="card rv"><div class="lbl">Expected acquisitions</div><div class="big" id="oA">3.5</div></div>
+      <div class="card rv"><div class="lbl">Media at $20–23</div><div class="big" id="oM" style="font-size:44px">$2.4–2.8K</div></div>
+      <div class="status s-ok" id="oS">In the sweet spot<small>Max sales for this team.</small></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="mix"><div class="wrap">
+  <div class="kick">07 · New sales vs add-ons</div>
+  <h2><span class="g">654</span> new acquisitions. <span class="g">452</span> add-on registrations.</h2>
+  <p class="lede">Registrations (1,106) = new acquisitions (654) + additional registrations (452), 1.69 registrations per acquisition. The CRM “Upsells” field is <b>empty (0) for every course</b>, so true upsells can't be separated from add-on registrations. If upsells need their own count, that field has to be filled in the CRM. Almost half the add-ons (201 of 452) are <b>Let's Speak French</b> registrations, which are most likely existing students continuing.</p>
+  <div class="tbl rv"><table>
+    <thead><tr><th>Course</th><th class="n">New acq</th><th class="n">Regs</th><th class="n">Add-on regs</th><th class="n">Regs / acq</th><th class="n">Contract $</th></tr></thead>
+    <tbody>
+      <tr><td>French Atelier: Foundation</td><td class="n">381</td><td class="n">446</td><td class="n">65</td><td class="n">1.17</td><td class="n">$455,891</td></tr>
+      <tr><td>French Atelier: Beginner</td><td class="n">103</td><td class="n">179</td><td class="n">76</td><td class="n">1.74</td><td class="n">$180,899</td></tr>
+      <tr><td>French Atelier: Intermediate</td><td class="n">68</td><td class="n">101</td><td class="n">33</td><td class="n">1.49</td><td class="n">$104,187</td></tr>
+      <tr><td>French Atelier: Elementary</td><td class="n">30</td><td class="n">70</td><td class="n">40</td><td class="n">2.33</td><td class="n">$70,954</td></tr>
+      <tr><td>Culture Capsules (3 courses)</td><td class="n">10</td><td class="n">39</td><td class="n">29</td><td class="n">3.90</td><td class="n">$18,492</td></tr>
+      <tr><td>Let's Speak French (4 rows)</td><td class="n">13</td><td class="n">214</td><td class="n">201</td><td class="n">16.5</td><td class="n">$157,541</td></tr>
+      <tr><td>The French Atelier 1 &amp; 2</td><td class="n">49</td><td class="n">57</td><td class="n">8</td><td class="n">1.16</td><td class="n">$57,589</td></tr>
+      <tr class="hl"><td><b>Total</b></td><td class="n"><b>654</b></td><td class="n"><b>1,106</b></td><td class="n"><b>452</b></td><td class="n"><b>1.69</b></td><td class="n"><b>$1,045,554</b></td></tr>
+    </tbody></table></div>
+  <div class="chartbox rv"><h3>Monthly: leads, acquisitions and real cost per lead</h3><div class="cap">mCost actual ÷ CRM leads. November covers 1–11 Nov only.</div><div class="cv" style="height:380px"><canvas id="c5" role="img" aria-label="Monthly leads, acquisitions and CPL"></canvas></div></div>
+</div></section>
+
+<section id="audit"><div class="wrap">
+  <div class="kick">08 · Data, method, and what was rechecked</div>
+  <h2>What this rests on, and what it <span class="c">can't</span> say.</h2>
+  <div class="grid g2" style="margin-top:30px">
+    <div class="card rv"><div class="lbl">Rechecked against the previous dashboard (callcenter-kpi-dashboard, French Atelier tab)</div>
+      <div class="tbl" style="margin-top:14px;border:0;background:none"><table style="min-width:0;font-size:15px">
+        <thead><tr><th>Week</th><th class="n">Contacted</th><th class="n">Calls</th><th class="n">Acq</th><th class="n">Leads old → CRM</th></tr></thead>
+        <tbody>
+          <tr><td>31 Aug–6 Sep</td><td class="n">208 ✓</td><td class="n">2,668 ✓</td><td class="n">19 ✓</td><td class="n">654 → 632</td></tr>
+          <tr><td>28 Sep–4 Oct</td><td class="n">195 ✓</td><td class="n">4,098 ✓</td><td class="n">18 ✓</td><td class="n">560 → 551</td></tr>
+          <tr><td>5–11 Oct</td><td class="n">262 ✓</td><td class="n">3,768 ✓</td><td class="n">24 ✓</td><td class="n">821 → 798</td></tr>
+          <tr><td>2–8 Nov</td><td class="n">160 → 164</td><td class="n">2,592 ✓</td><td class="n">4 → 6</td><td class="n">560 → 554</td></tr>
+        </tbody></table></div>
+      <p class="sub" style="margin-top:12px;font-size:15px">Calls and contacted match exactly. The old tab's lead counts came from the Gal workbook and run 1–3% above the CRM. 2–8 Nov now shows 6 acquisitions instead of 4: the old tab excluded Culture Capsules e-commerce, and this export includes all courses.</p></div>
+    <div class="card rv"><div class="lbl">Method</div><ul class="audit">
+      <li><b>Sources:</b> CRM By-Day (1 Mar–11 Nov), By-Rep, By-Course and mCost (13 months and 30 days). 11 Nov is partial and excluded. The data team's Employee Rank scorecard (1 Jan–10 Nov) is compared in <a class="inl" href="rank.html">tab 2</a>.</li>
+      <li><b>Open weekday</b> = Mon–Fri with calls logged (182 days). 14 weekend days had no calls (closed).</li>
+      <li><b>Peak:</b> Poisson GLM, acqs ~ leads + leads² + month + weekday, robust SE, 1,000-sample bootstrap.</li>
+      <li><b>150+ test:</b> two-proportion z-test on acquisitions ÷ contacted (25/479 vs 217/2,506), plus Mann–Whitney on acquisitions per day (p = 0.059).</li>
+      <li><b>Controls:</b> month fixed effects absorb team changes and seasonality. Weekday effects absorb the Monday backlog.</li>
+    </ul></div>
+  </div>
+  <div class="card coral rv" style="margin-top:18px"><div class="lbl">Not in the uploaded data: needed to turn “per rep, per shift” from an estimate into a measurement</div><ul class="audit">
+    <li><b>Shift and hours log</b> (who worked, which hours, each day). The previous dashboard flagged the same gap. Per-shift figures here assume 7 reps on shift.</li>
+    <li><b>By-Rep × By-Day export</b> (contacted, calls and acquisitions per rep per day). Without it, the golden-rule share can't be measured for each day.</li>
+    <li><b>Last-30-day By-Rep export.</b> The uploaded rep file covers all 8 months, so the “top reps in the last 30 days” ranking uses the full period.</li>
+    <li><b>Longevity files</b> (By-Day 49, by-Course 3) cover 2–11 Nov only (128 leads, 8 acquisitions). They're too short to model and are kept out of this analysis.</li>
+  </ul></div>
+</div></section>
+<footer class="wrap">Built from the CRM exports uploaded 11 Nov 2026 · French Atelier (Acadomia × eTeacher) sales team · All figures from source files. Estimates and assumptions are labeled.</footer>
+</main>
+<script>
+const F=window.FA, GOLD='#e9c27b', CORAL='#ff6b5a', MINT='#5fd3a5', MUT='rgba(244,241,234,.6)', GRID='rgba(255,255,255,.06)';
+Chart.defaults.color=MUT; Chart.defaults.font.family="Satoshi,system-ui"; Chart.defaults.font.size=15;
+const tip={backgroundColor:'#15171c',borderColor:'rgba(255,255,255,.15)',borderWidth:1,padding:14,titleFont:{size:16,weight:'700'},bodyFont:{size:15}};
+const B=F.bands, labs=B.map(b=>b.band);
+const fmt=n=>n.toLocaleString('en-US'), usd=n=>'$'+Math.round(n).toLocaleString('en-US');
+// band table
+document.getElementById('bandT').innerHTML=B.map(b=>{const hl=(b.band==='100–119'||b.band==='120–149')?'hl':(b.band==='150+'?'bad':'');
+ return `<tr class="${hl}"><td><b>${b.band}</b></td><td class="n">${b.n}</td><td class="n"><b>${b.acqs.toFixed(2)}</b></td><td class="n">${b.ci[0].toFixed(1)}–${b.ci[1].toFixed(1)}</td><td class="n">${b.cpl.toFixed(1)}</td><td class="n">${(b.contr*100).toFixed(1)}%</td><td class="n">${(b.acq_cont*100).toFixed(1)}%</td><td class="n">${b.acq100.toFixed(1)}</td></tr>`}).join('');
+// c1
+new Chart(c1,{data:{labels:labs,datasets:[
+ {type:'bar',label:'Calls per day',data:B.map(b=>b.calls),backgroundColor:'rgba(233,194,123,.55)',borderRadius:10,yAxisID:'y',order:2},
+ {type:'line',label:'Calls per lead',data:B.map(b=>b.cpl),borderColor:CORAL,backgroundColor:CORAL,borderWidth:4,pointRadius:7,tension:.35,yAxisID:'y2',order:1},
+ {type:'line',label:'Standard: 10 calls per lead',data:B.map(()=>10),borderColor:MINT,borderDash:[6,6],borderWidth:2,pointRadius:0,yAxisID:'y2',order:0}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:tip},scales:{x:{grid:{display:false},title:{display:true,text:'Leads that day'}},y:{grid:{color:GRID},title:{display:true,text:'Calls per day'},beginAtZero:true},y2:{position:'right',grid:{display:false},min:0,max:12,title:{display:true,text:'Calls per lead'}}}}});
+// c2 with CI
+const ciPlugin={id:'ci',afterDatasetsDraw(ch){const {ctx,scales:{x,y}}=ch;ctx.save();ctx.strokeStyle='rgba(244,241,234,.75)';ctx.lineWidth=2;B.forEach((b,i)=>{const px=x.getPixelForValue(i);const y1=y.getPixelForValue(b.ci[0]),y2=y.getPixelForValue(b.ci[1]);ctx.beginPath();ctx.moveTo(px,y1);ctx.lineTo(px,y2);ctx.moveTo(px-10,y1);ctx.lineTo(px+10,y1);ctx.moveTo(px-10,y2);ctx.lineTo(px+10,y2);ctx.stroke();});ctx.restore();}};
+const zone={id:'zone',beforeDatasetsDraw(ch){const {ctx,chartArea:a,scales:{x}}=ch;const x1=x.getPixelForValue(3)-x.getPixelForValue(1)/2+x.getPixelForValue(0)/2-20,x2=x.getPixelForValue(4)+(x.getPixelForValue(1)-x.getPixelForValue(0))/2;ctx.save();ctx.fillStyle='rgba(233,194,123,.08)';ctx.fillRect(x1,a.top,x2-x1,a.bottom-a.top);ctx.fillStyle=GOLD;ctx.font='700 14px Satoshi';ctx.fillText('SWEET SPOT',x1+12,a.top+22);ctx.restore();}};
+new Chart(c2,{type:'bar',data:{labels:labs,datasets:[{label:'Acquisitions per day',data:B.map(b=>b.acqs),backgroundColor:B.map(b=>b.band==='150+'?'rgba(255,107,90,.8)':(b.band==='100–119'||b.band==='120–149')?'rgba(233,194,123,.95)':'rgba(244,241,234,.22)'),borderRadius:12}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{afterLabel:c=>{const b=B[c.dataIndex];return `95% range ${b.ci[0]}–${b.ci[1]} · ${b.n} days`}}}},scales:{x:{grid:{display:false},title:{display:true,text:'Leads that day'}},y:{grid:{color:GRID},beginAtZero:true,max:5,title:{display:true,text:'Acquisitions per day'}}}},plugins:[ciPlugin,zone]});
+// c3 weekly scatter
+const Wk=F.weeks;
+new Chart(c3,{type:'scatter',data:{datasets:[{data:Wk.map(w=>({x:w.l,y:w.a,s:w.s,c:w.c})),backgroundColor:Wk.map(w=>w.l>=700?'rgba(233,194,123,.95)':'rgba(244,241,234,.45)'),pointRadius:9,pointHoverRadius:12}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>`Week of ${c.raw.s}: ${c.raw.x} leads → ${c.raw.y} acq · ${fmt(c.raw.c)} calls`}}},scales:{x:{grid:{color:GRID},title:{display:true,text:'Leads in the week'}},y:{grid:{color:GRID},beginAtZero:true,title:{display:true,text:'Acquisitions in the week'}}}}});
+// scenarios
+const S=F.scen;
+function scen(p){document.querySelectorAll('.cplb').forEach(b=>{const on=b.dataset.p===p;b.style.background=on?'rgba(233,194,123,.18)':'';b.style.color=on?'#e9c27b':'';b.style.borderColor=on?'rgba(233,194,123,.6)':''});
+ document.getElementById('scenT').innerHTML=S.map(s=>`<tr class="${s.name==='Max sales'?'hl':''}"><td><b>${s.name}</b><div style="font-size:14px;color:var(--dim)">${s.band}/wk · ${s.n} real weeks</div></td><td class="n">${fmt(s.wl)}</td><td class="n">${fmt(s.ml)}</td><td class="n"><b>${s.ma.toFixed(0)}</b></td><td class="n">${usd(s.cost[p])}</td><td class="n">${usd(s.cpa[p])}</td><td class="n">${s.marg?usd(s.marg[p])+'<div style="font-size:14px;color:var(--dim)">+'+s.dA+' acq</div>':'—'}</td><td class="n">${usd(s.sov)}</td><td class="n"><b style="color:${s.roi[p]>=1.6?'#5fd3a5':s.roi[p]<1.3?'#ff6b5a':'#e9c27b'}">${s.roi[p].toFixed(2)}×</b></td></tr>`).join('');}
+document.querySelectorAll('.cplb').forEach(b=>b.onclick=()=>scen(b.dataset.p)); scen('20');
+// reps
+const R=[['Mokla Sara','7 mo','senior',694,79,9.9,117],['Azizi Malek','16 mo','senior',1197,129,13.8,231],['Petit Anais','6 mo','senior',647,66,20.9,71],['Levy Marc','13 mo','senior',1564,131,7.4,186],['Levite Eric','6 mo','senior',913,69,10.1,134],['de Montclair Camille','8 mo','senior',992,68,15.7,161],['Lacroix David','1 mo','new',48,3,31.5,3],['Stefaoui Paul','1 mo','new',41,2,35.7,2],['Lemma Jerome','2 mo','new',207,7,32.6,7],['Dubois Lisa (disabled)','≤2 mo','new',17,0,23.7,0],['Departed reps (7, disabled)','—','gone',1250,92,null,105]];
+document.getElementById('repT').innerHTML=R.map(r=>{const ac=r[4]/r[3]*100;const top=['Mokla Sara','Azizi Malek','Petit Anais','Levy Marc','Levite Eric'].includes(r[0]);return `<tr class="${top?'hl':''}"><td><b>${r[0]}</b>${top?' <span style="color:var(--gold);font-size:13px;font-weight:700">TOP-5</span>':''}</td><td>${r[1]}</td><td class="n">${fmt(r[3])}</td><td class="n">${(r[3]/7633*100).toFixed(1)}%</td><td class="n">${r[4]}</td><td class="n" style="color:${ac>=9?'#5fd3a5':ac<5?'#ff6b5a':'inherit'}"><b>${ac.toFixed(1)}%</b></td><td class="n">${r[5]==null?'—':r[5].toFixed(1)}</td><td class="n">${r[6]}</td></tr>`}).join('');
+// c4 newcomer loss
+const shares=[0,5,10,15,20,26,30,40];
+new Chart(c4,{type:'bar',data:{labels:shares.map(s=>s+'%'),datasets:[{data:shares.map(s=>+(1000*s/100*(0.0902-0.0383)).toFixed(1)),backgroundColor:shares.map(s=>s===26?'rgba(255,107,90,.9)':'rgba(255,107,90,.35)'),borderRadius:10}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{label:c=>`≈${c.raw} acquisitions lost per month`}}},scales:{x:{grid:{display:false},title:{display:true,text:'Share of contacted orders handled by newcomers (26% = 2–8 Nov)'}},y:{grid:{color:GRID},beginAtZero:true,title:{display:true,text:'Acq lost / month'}}}}});
+// c5 monthly
+const M=F.months;
+new Chart(c5,{data:{labels:M.map(m=>new Date(m.m+'-01').toLocaleString('en',{month:'short'})+(m.days<28?' (1–11)':'')),datasets:[
+ {type:'bar',label:'Acquisitions',data:M.map(m=>m.a),backgroundColor:'rgba(233,194,123,.7)',borderRadius:10,yAxisID:'y'},
+ {type:'line',label:'Real CPL',data:M.map(m=>m.cpl),borderColor:CORAL,backgroundColor:CORAL,borderWidth:4,pointRadius:6,tension:.3,yAxisID:'y2'}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:14,font:{size:15}}},tooltip:{...tip,callbacks:{afterBody:c=>{const m=M[c[0].dataIndex];return `Leads ${fmt(m.l)} · Media ${usd(m.cost)} · ROI ${m.roi}×`}}}},scales:{x:{grid:{display:false}},y:{grid:{color:GRID},beginAtZero:true,title:{display:true,text:'Acquisitions'}},y2:{position:'right',grid:{display:false},min:0,max:40,ticks:{callback:v=>'$'+v},title:{display:true,text:'Cost per lead'}}}}});
+// calculator
+const P=B.map(b=>[b.leads,b.acqs,b.calls]);
+function interp(x,k){if(x<=P[0][0])return P[0][k];for(let i=1;i<P.length;i++){if(x<=P[i][0]){const t=(x-P[i-1][0])/(P[i][0]-P[i-1][0]);return P[i-1][k]+t*(P[i][k]-P[i-1][k]);}}const l=P[P.length-1],p=P[P.length-2];const t=(x-l[0])/(l[0]-p[0]);return Math.max(k===1?0.8:l[2],l[k]+t*(l[k]-p[k])*(k===1?1:0.3));}
+function calc(){const L=+iL.value,Rn=+iR.value;iN.max=Rn;const N=Math.min(+iN.value,Rn);vL.textContent=L;vR.textContent=Rn;vN.textContent=N;
+ const base=interp(L,1);const calls=interp(L,2)*(Rn/7);const mix=((Rn-N)*0.0902+N*0.0383)/Rn/0.0857;const a=Math.max(0,base*mix);
+ oLR.textContent=(L/Rn).toFixed(1);oCPL.textContent=(calls/L).toFixed(1);oA.textContent=a.toFixed(1);oM.textContent='$'+(L*20/1000).toFixed(1)+'–'+(L*23/1000).toFixed(1)+'K';
+ const s=document.getElementById('oS');
+ if(L>=150){s.className='status s-hi';s.innerHTML='Over the red line<small>150+ leads/day: calls per lead under 4, conversion falls to ~5%. Move leads to another day.</small>';}
+ else if(L>=100){s.className='status s-ok';s.innerHTML='In the sweet spot<small>100–149 leads: the highest acquisitions per day this team has produced.</small>';}
+ else{s.className='status s-lo';s.innerHTML='Under-fed<small>Below 100 leads the team has spare calls; it sells ~2.6–3.3 acq/day.</small>';}}
+[iL,iR,iN].forEach(e=>e.oninput=calc);calc();
+// reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+</script>
+</body>
+</html>
